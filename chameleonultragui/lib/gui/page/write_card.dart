@@ -132,6 +132,11 @@ class WriteCardPageState extends State<WriteCardPage> {
     final isSmallScreen = screenSize.width < 800;
     double fieldFontSize = isSmallScreen ? 16 : 20;
 
+    TagFrequency tagFrequency = TagFrequency.hf;
+    if (status.lfTech != "") {
+      tagFrequency = TagFrequency.lf;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Write Card'),
@@ -154,13 +159,12 @@ class WriteCardPageState extends State<WriteCardPage> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  buildFieldRow('UID', status.hfUid, fieldFontSize),
-                  buildFieldRow('SAK', status.sak, fieldFontSize),
-                  buildFieldRow('ATQA', status.atqa, fieldFontSize),
-                  // buildFieldRow('ATS', status.ats, fieldFontSize),
+                  tagFrequency == TagFrequency.lf ? buildFieldRow('UID', status.lfUid, fieldFontSize) : buildFieldRow('UID', status.hfUid, fieldFontSize),
+                  tagFrequency == TagFrequency.lf ? const SizedBox() : buildFieldRow('SAK', status.sak, fieldFontSize),
+                  tagFrequency == TagFrequency.lf ? const SizedBox() : buildFieldRow('ATQA', status.atqa, fieldFontSize),
                   const SizedBox(height: 16),
                   Text(
-                    'Tech: ${status.hfTech}',
+                    'Tech: ${tagFrequency == TagFrequency.lf ? status.lfTech : status.hfTech}',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: fieldFontSize),
                   ),
