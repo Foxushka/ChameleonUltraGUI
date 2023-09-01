@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  auto-pr:
+  update-translations:
     runs-on: ubuntu-latest
     env:
       CROWDIN_API: ${{ secrets.CROWDIN_API }}
@@ -23,7 +23,7 @@ jobs:
       run: |
         git config user.email "actions@github.com"
         git config user.name "GitHub Actions"
-        git add .
+        git add chameleonultragui/lib/l10n/*
         if git diff --quiet; then
           echo "No changes to commit"
         else
