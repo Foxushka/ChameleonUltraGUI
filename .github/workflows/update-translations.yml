@@ -17,8 +17,7 @@ jobs:
         python-version: 3.11
     - name: Run Python script
       run: python update.py
-      with:
-        working-directory: ./chameleonultragui/lib/l10n
+      working-directory: ./chameleonultragui/lib/l10n
     - name: Check for changes
       id: git-check
       run: |
