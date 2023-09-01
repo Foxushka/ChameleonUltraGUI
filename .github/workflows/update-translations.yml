@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  auto-pr:
+  update-translations:
     runs-on: ubuntu-latest
     env:
       CROWDIN_API: ${{ secrets.CROWDIN_API }}
@@ -17,14 +17,13 @@ jobs:
         python-version: 3.11
     - name: Run Python script
       run: python update.py
-      with:
-        working-directory: ./chameleonultragui/lib/l10n
+      working-directory: ./chameleonultragui/lib/l10n
     - name: Check for changes
       id: git-check
       run: |
         git config user.email "actions@github.com"
         git config user.name "GitHub Actions"
-        git add .
+        git add chameleonultragui/lib/l10n/*
         if git diff --quiet; then
           echo "No changes to commit"
         else
