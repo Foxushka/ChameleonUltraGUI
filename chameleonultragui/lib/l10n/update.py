@@ -1,7 +1,22 @@
 import json
 import os
+import sys
 import urllib.error
 from urllib.request import Request, urlopen
+
+
+def progressbar(it, prefix="", size=60, out=sys.stdout):
+    count = len(it)
+
+    def show(j):
+        x = int(size * j / count)
+        print(f"{prefix}[{u'█' * x}{('.' * (size - x))}] {j}/{count}", end='\r', file=out, flush=True)
+
+    show(0)
+    for i, item in enumerate(it):
+        yield item
+        show(i + 1)
+    print("\n", flush=True, file=out)
 
 
 def request(method, url, data=None):
@@ -13,7 +28,7 @@ def request(method, url, data=None):
                                                'Content-Type': 'application/json'})).read().decode())
 
 
-for language in request('GET', 'https://crowdin.com/api/v2/languages?limit=500')['data']:
+for language in progressbar(request('GET', 'https://crowdin.com/api/v2/languages?limit=500')['data']):
     try:
         progress = request('GET',
                            f'https://crowdin.com/api/v2/projects/610545/languages/{language["data"]["id"]}/progress')
