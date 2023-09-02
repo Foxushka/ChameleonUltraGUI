@@ -6,6 +6,9 @@ on:
 jobs:
   update-translations:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     env:
       CROWDIN_API: ${{ secrets.CROWDIN_API }}
     steps:
