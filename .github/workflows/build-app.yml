@@ -15,55 +15,6 @@ jobs:
       - uses: 8BitJonny/gh-get-current-pr@2.2.0
         id: PR
 
-  build-android:
-    needs: check
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./chameleonultragui
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '21'
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-      - run: flutter pub get
-      - run: flutter build apk --build-number ${{ github.run_number }}
-      - uses: actions/upload-artifact@v4
-        with:
-          name: apk
-          path: chameleonultragui/build/app/outputs/flutter-apk/app-release.apk
-
-  build-windows:
-    needs: check
-    runs-on: windows-latest
-    defaults:
-      run:
-        working-directory: ./chameleonultragui
-    steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-      - run: flutter config --enable-windows-desktop
-      - run: flutter build windows --build-number ${{ github.run_number }}
-      - run: flutter test
-      - uses: actions/upload-artifact@v4
-        with:
-          name: windows
-          path: chameleonultragui/build/windows/x64/runner/Release/
-      - name: Create NSIS installer
-        uses: joncloud/makensis-action@v4
-        with:
-          script-file: nsis-installer.nsi
-      - uses: actions/upload-artifact@v4
-        with:
-          name: windows-installer
-          path: chameleonultragui-setup-win.exe
-
   build-linux:
     needs: check
     runs-on: ubuntu-latest
@@ -112,38 +63,6 @@ jobs:
         with:
           name: linux-legacy
           path: chameleonultragui/build/linux/x64/release/bundle
-
-  build-macos:
-    needs: check
-    runs-on: macos-latest
-    defaults:
-      run:
-        working-directory: ./chameleonultragui
-    steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-      - name: Enable macOS
-        run: flutter config --enable-macos-desktop
-      - name: Install tools
-        run: brew install automake libtool create-dmg
-      - run: flutter build macos --release
-
-  build-ios:
-    needs: check
-    runs-on: macos-latest
-    defaults:
-      run:
-        working-directory: ./chameleonultragui
-    steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-      - name: Install tools
-        run: brew install automake libtool create-dmg
-      - run: flutter build ios --release 2>&1 | tee /dev/tty | grep -q "Xcode build done" && exit 0 || exit 1
 
   create_dev_release:
     permissions:
