@@ -82,7 +82,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: linux
-          path: chameleonultragui/build/linux/x64/release
+          path: chameleonultragui/build/linux/x64/release/bundle
       - run: dart pub global activate flutter_to_debian
       - run: flutter_to_debian
       - uses: actions/upload-artifact@v4
@@ -111,7 +111,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: linux-legacy
-          path: chameleonultragui/build/linux/x64/release
+          path: chameleonultragui/build/linux/x64/release/bundle
 
   build-macos:
     needs: check
@@ -162,8 +162,7 @@ jobs:
       - name: Download release artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: '{apk,windows,windows-installer,linux,linux-debian,linux-legacy}'
-          merge-multiple: true
+          pattern: '{linux,linux-debian,linux-legacy}'
           path: release-artifacts
       - name: Upload to dev release
         uses: softprops/action-gh-release@v1
@@ -177,7 +176,7 @@ jobs:
           prerelease: true
           target_commitish: ${{ github.sha }}
           generate_release_notes: true
-          files: release-artifacts/**/*
+          files: release-artifacts/*.zip
       - name: Fix up release tag
         run: |
           git tag -f dev
@@ -200,8 +199,7 @@ jobs:
       - name: Download release artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: '{apk,windows,windows-installer,linux,linux-debian,linux-legacy}'
-          merge-multiple: true
+          pattern: '{linux,linux-debian,linux-legacy}'
           path: release-artifacts
       - name: Upload to tagged release
         uses: softprops/action-gh-release@v1
@@ -214,4 +212,4 @@ jobs:
           target_commitish: ${{ github.sha }}
           generate_release_notes: true
           append_body: true
-          files: release-artifacts/**/*
+          files: release-artifacts/*.zip
