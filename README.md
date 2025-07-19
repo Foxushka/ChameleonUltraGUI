@@ -12,7 +12,6 @@ A GUI for the Chameleon Ultra/Chameleon Lite written in Flutter for cross platfo
 #### Windows
 
 Download the installer [here](https://nightly.link/GameTec-live/ChameleonUltraGUI/workflows/build-app/main/windows-installer.zip)
-
 Or, [portable version](https://nightly.link/GameTec-live/ChameleonUltraGUI/workflows/build-app/main/windows.zip)
 
 
