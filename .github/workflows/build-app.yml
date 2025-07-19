@@ -81,6 +81,13 @@ jobs:
         with:
           pattern: '{linux,linux-debian,linux-legacy}'
           path: release-artifacts
+      - name: Create zip files from artifacts
+        run: |
+          cd release-artifacts
+          for dir in */; do
+            artifact_name="${dir%/}"
+            zip -r "${artifact_name}.zip" "$dir"
+          done
       - name: Upload to dev release
         uses: softprops/action-gh-release@v1
         with:
@@ -116,6 +123,13 @@ jobs:
         with:
           pattern: '{linux,linux-debian,linux-legacy}'
           path: release-artifacts
+      - name: Create zip files from artifacts
+        run: |
+          cd release-artifacts
+          for dir in */; do
+            artifact_name="${dir%/}"
+            zip -r "${artifact_name}.zip" "$dir"
+          done
       - name: Upload to tagged release
         uses: softprops/action-gh-release@v1
         with:
